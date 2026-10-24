@@ -1,0 +1,31 @@
+name: Rename gambit to docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # adds a "Run workflow" button
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    # Extra guard against loops (GITHUB_TOKEN pushes don't retrigger anyway)
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Rename gambit -> docs if needed
+        run: |
+          if [ -d "gambit" ] && [ ! -d "docs" ]; then
+            echo "Renaming gambit to docs..."
+            git mv gambit docs
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "Auto-rename gambit to docs"
+            git push
+          else
+            echo "Nothing to do (gambit missing or docs already exists)."
+          fi
