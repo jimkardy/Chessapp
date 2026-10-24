@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Chess Steps - learn chess from zero, practice tactics, and play the built-in engine.">
+<title>Chess Steps</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript>
+  <div class="noscriptbox">
+    <h1>Chess Steps</h1>
+    <p>This trainer needs JavaScript to run the lessons, puzzles, and the built-in chess engine.
+       Please enable JavaScript and reload the page.</p>
+  </div>
+</noscript>
+
+<header class="topbar">
+  <button class="brand" id="home" type="button">Chess Steps</button>
+  <div class="topstats">
+    <span id="xp">Points 0</span>
+    <span id="rank" class="dim">Rank: Beginner</span>
+  </div>
+</header>
+
+<main id="screen-home" class="screen">
+  <section class="hero">
+    <h1>Learn chess, step by step</h1>
+    <p>From "never played" to solid club player. Pick where you are:</p>
+  </section>
+  <section class="grid">
+    <button class="tile" id="go-learn" type="button">
+      <span class="tnum">1</span>
+      <span class="tbody"><strong>Learn</strong><em>20 short lessons, in order</em><span class="tstat" id="learnstat"></span></span>
+    </button>
+    <button class="tile" id="go-do" type="button">
+      <span class="tnum">2</span>
+      <span class="tbody"><strong>Practice</strong><em>Find the best move</em><span class="tstat" id="practicestat"></span></span>
+    </button>
+    <button class="tile" id="go-check" type="button">
+      <span class="tnum">3</span>
+      <span class="tbody"><strong>Coach</strong><em>10 quick quizzes</em><span class="tstat" id="checkstat"></span></span>
+    </button>
+    <button class="tile" id="go-play" type="button">
+      <span class="tnum">4</span>
+      <span class="tbody"><strong>Play</strong><em>vs the chess engine</em><span class="tstat">8 levels</span></span>
+    </button>
+  </section>
+  <section class="path">
+    <h2>A simple path</h2>
+    <ol>
+      <li>Read a lesson in <b>Learn</b>, mark it done.</li>
+      <li>Solve a couple of puzzles in <b>Practice</b>.</li>
+      <li>Take the matching quiz in <b>Coach</b>.</li>
+      <li>Play a game in <b>Play</b> at a near level.</li>
+      <li>A little every day beats a lot once a month.</li>
+    </ol>
+    <button id="tourBtn" class="btn" type="button">Show me around (2 min tour)</button>
+  </section>
+</main>
+
+<section id="screen-learn" class="screen" hidden>
+  <header class="sub">
+    <button class="backnav link" data-back="screen-home" type="button">&#8249; Home</button>
+    <h2>Learn</h2>
+  </header>
+  <div id="learn-list" class="list"></div>
+</section>
+
+<section id="screen-lesson" class="screen" hidden>
+  <header class="sub">
+    <button class="backnav link" data-back="screen-learn" type="button">&#8249; Lessons</button>
+    <h2 id="lesson-title"></h2>
+  </header>
+  <article class="card lessonbody">
+    <div id="lesson-body"></div>
+    <div class="lessonfoot">
+      <button id="lesson-done" class="btn primary" type="button">Mark done</button>
+    </div>
+  </article>
+</section>
+
+<section id="screen-practice" class="screen" hidden>
+  <header class="sub">
+    <button class="backnav link" data-back="screen-home" type="button">&#8249; Home</button>
+    <h2>Practice</h2>
+    <span class="substat">Solved <b id="pz-solved">0</b></span>
+  </header>
+  <div class="pwrap">
+    <div class="card puzzle">
+      <div class="ptop">
+        <span id="pz-num">Puzzle 1</span>
+        <span id="pz-theme" class="tag"></span>
+      </div>
+      <p id="pz-desc" class="dim"></p>
+    </div>
+    <div id="pz-board" class="board"></div>
+    <div class="card">
+      <p class="dim">Side to move: <b id="pz-side"></b> - pick the best move:</p>
+      <div id="pz-opts" class="opts"></div>
+      <div id="pz-msg" class="msg"></div>
+      <div class="row">
+        <button id="pz-skip" class="btn" type="button">Skip</button>
+        <button id="pz-next" class="btn" type="button">Next puzzle</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screen-check" class="screen" hidden>
+  <header class="sub">
+    <button class="backnav link" data-back="screen-home" type="button">&#8249; Home</button>
+    <h2>Coach</h2>
+  </header>
+  <div id="quiz-list" class="list"></div>
+  <div id="quiz-run" class="card quizrun" hidden>
+    <div class="ptop">
+      <span id="q-title"></span>
+      <span id="q-prog" class="dim"></span>
+    </div>
+    <p id="q-text" class="qtext"></p>
+    <div id="q-opts" class="opts"></div>
+    <div class="row"><button id="q-next" class="btn" hidden type="button">Next</button></div>
+  </div>
+  <div id="quiz-done" class="card donebox" hidden>
+    <h3>Quiz complete</h3>
+    <p id="q-score"></p>
+    <div class="row">
+      <button class="backnav btn" data-back="screen-check" type="button">Back to quizzes</button>
+      <button class="backnav btn" data-back="screen-home" type="button">Home</button>
+    </div>
+  </div>
+</section>
+
+<section id="screen-play" class="screen" hidden>
+  <header class="sub">
+    <button class="backnav link" data-back="screen-home" type="button">&#8249; Home</button>
+    <h2>Play</h2>
+  </header>
+  <div class="playwrap">
+    <aside class="card playside">
+      <label class="field">Engine level
+        <select id="play-level">
+          <option value="1">1 - Gentle</option>
+          <option value="2">2 - Easy</option>
+          <option value="3">3 - Steady</option>
+          <option value="4">4 - Decent</option>
+          <option value="5">5 - Tough</option>
+          <option value="6">6 - Strong</option>
+          <option value="7">7 - Very strong</option>
+          <option value="8">8 - Brutal</option>
+        </select>
+      </label>
+      <div class="playingas">You play <b>white</b>. Click a piece, then a square.</div>
+      <div class="row">
+        <button id="play-new" class="btn" type="button">New game</button>
+        <button id="play-flip" class="btn" type="button">Flip</button>
+        <button id="play-undo" class="btn" type="button">Undo</button>
+      </div>
+      <div id="play-status" class="status">White to move</div>
+      <div class="histwrap">
+        <div class="dim hlabel">Moves</div>
+        <div id="play-hist" class="hist"></div>
+      </div>
+    </aside>
+    <div id="play-board" class="board"></div>
+  </div>
+</section>
+
+<div id="tour" class="tour" hidden>
+  <div class="tourcard" role="dialog" aria-label="Quick tour">
+    <div class="tourhead">
+      <strong>Quick tour</strong>
+      <button id="tour-close" class="btn" type="button">Close</button>
+    </div>
+    <div id="tour-body" class="tourbody"></div>
+    <div class="tourfoot">
+      <button id="tour-prev" class="btn" type="button">Back</button>
+      <span id="tour-step" class="dim"></span>
+      <button id="tour-next" class="btn primary" type="button">Next</button>
+    </div>
+  </div>
+</div>
+
+<footer class="sitefoot"><span>made with &#10084;&#65039; by alex</span></footer>
+
+<script src="js/engine.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/openings.js"></script>
+<script src="js/lessons.js"></script>
+<script src="js/puzzles.js"></script>
+<script src="js/quizzes.js"></script>
+<script src="js/board.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
