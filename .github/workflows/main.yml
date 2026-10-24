@@ -1,0 +1,49 @@
+name: Auto-unzip uploaded archives
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    # Don't re-run on the bot's own commit (belt & braces)
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract any ZIP files in place
+        run: |
+          shopt -s globstar nullglob
+          zips=(**/*.zip **/*.ZIP)
+          if [ ${#zips[@]} -eq 0 ]; then
+            echo "No ZIP files found — nothing to do."
+            exit 0
+          fi
+          for z in "${zips[@]}"; do
+            echo "Extracting $z"
+            dest="$(dirname "$z")"
+            if unzip -o "$z" -d "$dest"; then
+              rm -f "$z"
+              echo "Deleted $z after successful extraction."
+            else
+              echo "FAILED to extract $z — leaving it in place."
+              exit 1
+            fi
+          done
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-unzip uploaded archive(s)"
+            git push
+          fi
