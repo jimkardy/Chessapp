@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Training</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <noscript>
+    <div class="js-off">
+      <h1>Chess Training</h1>
+      <p>This site uses JavaScript to run the chess board, lessons, puzzles and quizzes.</p>
+      <p>Please turn JavaScript on in your browser to use it.</p>
+    </div>
+  </noscript>
+
+  <div id="app">
+    <header>
+      <div class="bar">
+        <button class="logo" id="goHome">Chess Training</button>
+        <div class="stats">
+          <span id="xp">XP 0</span>
+          <span id="rank">Rank: Beginner</span>
+        </div>
+      </div>
+    </header>
+
+    <section id="menu" class="view">
+      <div class="intro">
+        <h2>Learn chess, one step at a time</h2>
+        <p>Go from knowing nothing to playing solid chess.</p>
+      </div>
+      <div class="cards">
+        <button class="card" id="btnLessons">
+          <strong>Learn</strong>
+          <span>Step by step lessons</span>
+        </button>
+        <button class="card" id="btnPuzzles">
+          <strong>Puzzles</strong>
+          <span>Practice tactics</span>
+        </button>
+        <button class="card" id="btnQuiz">
+          <strong>Quiz</strong>
+          <span>Check what you know</span>
+        </button>
+        <button class="card" id="btnPlay">
+          <strong>Play</strong>
+          <span>vs computer at your level</span>
+        </button>
+      </div>
+      <div class="progress">
+        <div>Lessons done: <span id="pLess">0</span></div>
+        <div>Puzzles solved: <span id="pPuz">0</span></div>
+        <div>Quizzes done: <span id="pQuiz">0</span></div>
+      </div>
+    </section>
+
+    <section id="lessons" class="view" hidden>
+      <div class="top">
+        <button class="back" data-back="menu">Back</button>
+        <h2>Lessons</h2>
+      </div>
+      <div id="lessonList" class="list"></div>
+    </section>
+
+    <section id="lesson" class="view" hidden>
+      <div class="top">
+        <button class="back" data-back="lessons">Back to lessons</button>
+        <h2 id="lessonTitle"></h2>
+      </div>
+      <div class="lessonBody">
+        <div id="lessonText" class="text"></div>
+        <div id="lessonBoardWrap" class="boardWrap" hidden>
+          <div id="lessonBoard" class="board"></div>
+          <div class="boardNav">
+            <button id="lbPrev">Prev</button>
+            <span id="lbInfo"></span>
+            <button id="lbNext">Next</button>
+          </div>
+        </div>
+        <button id="markDone" class="done">Done</button>
+      </div>
+    </section>
+
+    <section id="puzzles" class="view" hidden>
+      <div class="top">
+        <button class="back" data-back="menu">Back</button>
+        <h2>Puzzles</h2>
+        <div class="right">Solved <span id="pzCount">0</span></div>
+      </div>
+      <div class="puz">
+        <div class="puzHead">
+          <span id="pzNum"></span>
+          <span id="pzTheme"></span>
+        </div>
+        <p id="pzDesc"></p>
+        <div id="puzBoard" class="board"></div>
+        <div class="puzTurn" id="pzTurn"></div>
+        <div class="puzBtns">
+          <button id="pzHint">Hint</button>
+          <button id="pzReset">Reset</button>
+          <button id="pzNext">Next</button>
+        </div>
+        <div id="pzMsg" class="msg"></div>
+      </div>
+    </section>
+
+    <section id="quiz" class="view" hidden>
+      <div class="top">
+        <button class="back" data-back="menu">Back</button>
+        <h2>Quiz</h2>
+      </div>
+      <div id="quizList" class="list"></div>
+      <div id="quizRun" class="quizRun" hidden>
+        <div class="qHead">
+          <span id="qTitle"></span>
+          <span id="qProg"></span>
+        </div>
+        <p id="qText"></p>
+        <div id="qOpts" class="opts"></div>
+        <button id="qNext" class="done" hidden>Next</button>
+      </div>
+      <div id="quizEnd" class="quizEnd" hidden>
+        <h3>Done</h3>
+        <p id="qScore"></p>
+        <button class="back" data-back="menu">Back to menu</button>
+      </div>
+    </section>
+
+    <section id="play" class="view" hidden>
+      <div class="top">
+        <button class="back" data-back="menu">Back</button>
+        <h2>Play</h2>
+      </div>
+      <div class="play">
+        <div class="playSide">
+          <label>
+            Level
+            <select id="level">
+              <option value="1">1 - Beginner</option>
+              <option value="2">2 - Learner</option>
+              <option value="3">3 - Intermediate</option>
+              <option value="4">4 - Solid</option>
+              <option value="5">5 - Strong</option>
+              <option value="6">6 - Advanced</option>
+              <option value="7">7 - Master</option>
+              <option value="8">8 - Grandmaster</option>
+            </select>
+          </label>
+          <button id="newg">New game</button>
+          <button id="flip">Flip board</button>
+          <button id="undo">Undo</button>
+          <div class="status" id="status">White to move</div>
+          <div class="hist" id="hist"></div>
+        </div>
+        <div class="playBoard">
+          <div id="playBoard" class="board"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/engine.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/openings.js"></script>
+  <script src="js/lessons.js"></script>
+  <script src="js/puzzles.js"></script>
+  <script src="js/quizzes.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
