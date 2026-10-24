@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Steps</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <noscript>
+    <div class="noscript">
+      <h1>Chess Steps</h1>
+      <p>This page needs JavaScript to run.</p>
+      <p>Turn on JavaScript and reload.</p>
+    </div>
+  </noscript>
+
+  <header class="topbar">
+    <button class="brand" id="home">Chess Steps</button>
+    <div class="topbar-stats">
+      <span id="streak">Streak 0</span>
+      <span id="points">Points 0</span>
+      <span id="goal">Goal: 2500</span>
+    </div>
+  </header>
+
+  <main id="screen-home" class="screen">
+    <section class="hero">
+      <h1>Learn chess step by step</h1>
+      <p>Start from nothing. Build up one thing at a time until you play solid chess.</p>
+      <button id="startTour" class="btn primary">Show me around</button>
+    </section>
+
+    <section class="grid">
+      <button class="tile" id="go-learn"><div class="tile-num">1</div><div class="tile-body"><strong>Learn</strong><span>Short, plain lessons</span></div></button>
+      <button class="tile" id="go-do"><div class="tile-num">2</div><div class="tile-body"><strong>Practice</strong><span>Puzzles that fit what you just learned</span></div></button>
+      <button class="tile" id="go-check"><div class="tile-num">3</div><div class="tile-body"><strong>Check</strong><span>Short quizzes</span></div></button>
+      <button class="tile" id="go-play"><div class="tile-num">4</div><div class="tile-body"><strong>Play</strong><span>Play the computer, go up slowly</span></div></button>
+    </section>
+
+    <section class="path">
+      <h2>Your path</h2>
+      <ol>
+        <li>Learn the rules and moves</li>
+        <li>Learn simple tactics</li>
+        <li>Learn safe openings</li>
+        <li>Learn planning</li>
+        <li>Learn endgames</li>
+        <li>Play and fix mistakes</li>
+      </ol>
+      <p class="muted">Do a little each time. Focus on fixing one mistake at a time.</p>
+    </section>
+  </main>
+
+  <section id="screen-learn" class="screen" hidden>
+    <header class="sub">
+      <button class="link" data-back="home">Back</button>
+      <h2>Learn</h2>
+    </header>
+    <div id="learn-list" class="list"></div>
+  </section>
+
+  <section id="screen-lesson" class="screen" hidden>
+    <header class="sub">
+      <button class="link" data-back="learn">Back to list</button>
+      <h2 id="lesson-title"></h2>
+    </header>
+    <article class="lesson">
+      <div id="lesson-body" class="lesson-body"></div>
+      <div id="lesson-board-wrap" class="board-wrap" hidden>
+        <div id="lesson-board" class="board"></div>
+        <div class="board-bar">
+          <button id="lb-prev">Back</button>
+          <span id="lb-info"></span>
+          <button id="lb-next">Next</button>
+        </div>
+      </div>
+      <div class="lesson-actions">
+        <button id="lesson-done" class="btn">Mark done</button>
+      </div>
+    </article>
+  </section>
+
+  <section id="screen-practice" class="screen" hidden>
+    <header class="sub">
+      <button class="link" data-back="home">Back</button>
+      <h2>Practice</h2>
+      <span class="substat">Solved <span id="pz-count">0</span></span>
+    </header>
+    <div class="puzzle">
+      <div class="puzzle-top">
+        <span id="pz-num"></span>
+        <span id="pz-theme"></span>
+      </div>
+      <p id="pz-desc" class="puzzle-desc"></p>
+      <div id="pz-board" class="board"></div>
+      <div class="puzzle-meta">Side to move: <span id="pz-side"></span></div>
+      <div class="puzzle-btns">
+        <button id="pz-hint">Hint</button>
+        <button id="pz-reset">Reset</button>
+        <button id="pz-next">Next</button>
+      </div>
+      <div id="pz-msg" class="msg"></div>
+    </div>
+  </section>
+
+  <section id="screen-check" class="screen" hidden>
+    <header class="sub">
+      <button class="link" data-back="home">Back</button>
+      <h2>Check</h2>
+    </header>
+    <div id="quiz-list" class="list"></div>
+    <div id="quiz-run" class="quiz" hidden>
+      <div class="quiz-top">
+        <span id="q-title"></span>
+        <span id="q-prog"></span>
+      </div>
+      <p id="q-text" class="q-text"></p>
+      <div id="q-opts" class="opts"></div>
+      <button id="q-next" class="btn" hidden>Next</button>
+    </div>
+    <div id="quiz-done" class="donebox" hidden>
+      <h3>Done</h3>
+      <p id="q-score"></p>
+      <button class="link" data-back="home">Back home</button>
+    </div>
+  </section>
+
+  <section id="screen-play" class="screen" hidden>
+    <header class="sub">
+      <button class="link" data-back="home">Back</button>
+      <h2>Play</h2>
+    </header>
+    <div class="play">
+      <div class="play-side">
+        <label class="field">Level
+          <select id="play-level">
+            <option value="1">1 - First steps</option>
+            <option value="2">2 - Getting going</option>
+            <option value="3">3 - Seeing threats</option>
+            <option value="4">4 - Simple plans</option>
+            <option value="5">5 - Putting together</option>
+            <option value="6">6 - Tighter play</option>
+            <option value="7">7 - Stronger</option>
+            <option value="8">8 - Near master</option>
+          </select>
+        </label>
+        <button id="play-new">New game</button>
+        <button id="play-flip">Flip</button>
+        <button id="play-undo">Undo</button>
+        <div id="play-status" class="status">White to move</div>
+        <div class="hist-wrap">
+          <div class="hist-label">Moves</div>
+          <div id="play-hist" class="hist"></div>
+        </div>
+      </div>
+      <div class="play-main">
+        <div id="play-board" class="board"></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="tour" class="tour" hidden>
+    <div class="tour-card">
+      <div class="tour-head">
+        <strong>Quick tour</strong>
+        <button id="tour-close">Close</button>
+      </div>
+      <div id="tour-body" class="tour-body"></div>
+      <div class="tour-foot">
+        <button id="tour-prev">Back</button>
+        <span id="tour-step"></span>
+        <button id="tour-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/engine.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/openings.js"></script>
+  <script src="js/lessons.js"></script>
+  <script src="js/puzzles.js"></script>
+  <script src="js/quizzes.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/app.js"></script>
+  <footer class="sitefoot"><span>made with ❤️ by alex</span></footer>
+</body>
+</html>
